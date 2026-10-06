@@ -126,8 +126,8 @@ function App() {
   }
   return (
     <div className="app">
-      <h1>CSV Transformer</h1>
-      <p>Convert your CSV file into the format you need.</p>
+      <h1>CSV to Shopify</h1>
+      <p>Convert your supplier CSV into a Shopify-ready CSV.</p>
       <p>Select a CSV file to get started.</p>
       <input 
         type="file" 
