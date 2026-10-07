@@ -129,6 +129,9 @@ function App() {
       <h1>CSV to Shopify</h1>
       <p>Convert your supplier CSV into a Shopify-ready CSV.</p>
       <p>Select a CSV file to get started.</p>
+      <a href="#instructions">
+        <button>اقرأ قبل الاستعمال</button>
+      </a>
       <input 
         type="file" 
         accept=".csv"
@@ -234,6 +237,36 @@ function App() {
           </div>
         </div>
       )}
+
+      <section id="instructions">
+        <h2>Before You Start</h2>
+
+        <p>
+          This tool is currently designed for converting CSV files
+          containing simple products into a Shopify-ready CSV file.
+        </p>
+
+        <p>
+          Products with options or multiple variants, such as Color or Size,
+          are not supported yet.
+        </p>
+
+        <h3>Example</h3>
+
+        <p>Supplier CSV:</p>
+
+        <pre>
+          {`Product Name,SKU,Stock,Price,Brand
+          Brake Pad,BP001,15,25.50,ToyotaParts`}
+        </pre>
+
+        <p>Result:</p>
+
+        <pre>
+          {`Handle,Title,Vendor,Option1 Name,Option1 Value,Variant SKU,Variant Inventory Qty,Variant Price
+          brake-pad,Brake Pad,ToyotaParts,Title,Default Title,BP001,15,25.50`}
+        </pre>
+      </section>
     </div>
   )
 }
