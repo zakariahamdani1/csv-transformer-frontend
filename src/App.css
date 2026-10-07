@@ -115,3 +115,28 @@ button {
   font-size: 14px;
   font-weight: 500;
 }
+
+#instructions {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f8f9fa;
+}
+
+#instructions h2 {
+  margin-bottom: 20px;
+}
+
+#instructions h3 {
+  margin-top: 30px;
+}
+
+#instructions pre {
+  background: #ffffff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 14px;
+}

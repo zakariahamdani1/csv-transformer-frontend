@@ -129,9 +129,6 @@ function App() {
       <h1>CSV to Shopify</h1>
       <p>Convert your supplier CSV into a Shopify-ready CSV.</p>
       <p>Select a CSV file to get started.</p>
-      <a href="#instructions">
-        <button>اقرأ قبل الاستعمال</button>
-      </a>
       <input 
         type="file" 
         accept=".csv"
