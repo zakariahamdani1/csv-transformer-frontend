@@ -93,7 +93,7 @@ function App() {
     formData.append('mapping', JSON.stringify(mapping))
     formData.append('force', force)
 
-    fetch("https://csv-transformer-backend.onrender.com/api/test/", {
+    fetch("https://csv-transformer-backend.onrender.com/api/test/", { /*"http://127.0.0.1:8000/api/test/"*/
       method: 'POST',
       body: formData,
     })
