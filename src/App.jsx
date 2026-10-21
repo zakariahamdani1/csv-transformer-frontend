@@ -121,7 +121,7 @@ function App() {
     formData.append('mappings', JSON.stringify(mappings))
     formData.append('force', force)
 
-    fetch("http://127.0.0.1:8000/api/test/", { /*"https://csv-transformer-backend.onrender.com/api/test/"*/
+    fetch("https://csv-transformer-backend.onrender.com/api/test/", { /*"http://127.0.0.1:8000/api/test/"*/
       method: 'POST',
       body: formData,
     })
