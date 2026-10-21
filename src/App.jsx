@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import "./App.css"
 
 function App() {
@@ -12,18 +12,46 @@ function App() {
   ]
   const[file, setFile] = useState(null)
   const [headers, setHeaders] = useState([])
-  const [mapping, setMapping] = useState({
-    title: null,
-    sku: null,
-    stock: null,
-    price: null,
-    vendor: null
-  })
+  const [selectedColumns, setSelectedColumns] = useState([])
+  const [mappings, setMappings] = useState([
+    { shopifyKey: "title", sourceIndex: null, enabled: true }
+  ])
+
+  const [shopifyColumns, setShopifyColumns] = useState([])
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [showErrorConfirm, setShowErrorConfirm] = useState(false)
   const [errorCsv, setErrorCsv] = useState(null)
   const [structureErrors, setStructureErrors] = useState([])
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/shopify-columns/")
+      .then(response => response.json())
+      .then(data => {
+        setShopifyColumns(data)
+      })
+      .catch(error => {
+        console.error("Failed to load Shopify columns:", error)
+      })
+  }, [])
+
+  function addMapping() {
+    setMappings([
+      ...mappings,
+      { shopifyKey: "", sourceIndex: null, enabled: true }
+    ])
+  }
+
+  function updateMapping(index, field, value) {
+    setMappings(mappings.map((mapping, i) =>
+      i === index
+        ? { ...mapping, [field]: value }
+        : mapping
+    ))
+  }
+
+  function removeMapping(index) {
+    setMappings(mappings.filter((_, i) => i !== index))
+  }
 
   function readHeaders(file) {
     const reader = new FileReader()
@@ -90,10 +118,10 @@ function App() {
   function transformFile(force = false) {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('mapping', JSON.stringify(mapping))
+    formData.append('mappings', JSON.stringify(mappings))
     formData.append('force', force)
 
-    fetch("https://csv-transformer-backend.onrender.com/api/test/", { /*"http://127.0.0.1:8000/api/test/"*/
+    fetch("http://127.0.0.1:8000/api/test/", { /*"https://csv-transformer-backend.onrender.com/api/test/"*/
       method: 'POST',
       body: formData,
     })
@@ -135,13 +163,9 @@ function App() {
         onChange={(event) => {
           const selectedFile = event.target.files[0]
           setFile(selectedFile)
-          setMapping({
-            title: null,
-            sku: null,
-            stock: null,
-            price: null,
-            vendor: null
-          })
+          setMappings([
+            { shopifyKey: "title", sourceIndex: null, enabled: true }
+          ])
           setStructureErrors([])
           setErrorCsv(null)
           setShowConfirm(false)
@@ -164,40 +188,99 @@ function App() {
       )}
         {headers.length > 0 && (
           <div className="mapping">
-            <h2>Match your file columns</h2>
-            <p>Select the column that contains each type of information.</p>
-            
-            {mappingFields.map((field) => (
-              <div className="mapping-row" key={field.key}>
-                <label>{field.label}: </label>
+            <h2>Match your columns</h2>
+            <p>Choose a Shopify column and the matching supplier column.</p>
 
-                <select
-                  value={mapping[field.key] ?? ""}
-                  onChange={(event) => {
-                    setMapping({
-                      ...mapping,
-                      [field.key]: event.target.value === "" ? null : Number(event.target.value)
-                    })
-                  }}
-                >
-                  <option value="">Don't use</option>
+            {mappings.map((mapping, index) => {
+              const column = shopifyColumns.find(
+                item => item.key === mapping.shopifyKey
+              )
 
-                   {headers.map((header, index) => (
-                      <option
-                        key={index}
-                        value={index}
-                        disabled={isColumnUsed(index, field.key)}
-                      >
-                        {header}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            ))}
+              return (
+                <div className="mapping-row" key={index}>
+                  <select
+                    value={mapping.shopifyKey}
+                    onChange={event =>
+                      updateMapping(index, "shopifyKey", event.target.value)
+                    }
+                  >
+                    <option value="" disabled>Select Shopify column</option>
+
+                    {shopifyColumns.map(column => {
+                      const usedByAnotherRow = mappings.some(
+                        (item, i) =>
+                          i !== index &&
+                          item.shopifyKey === column.key
+                      )
+
+                      return (
+                        <option
+                          key={column.key}
+                          value={column.key}
+                          disabled={usedByAnotherRow}
+                        >
+                          {column.label}
+                        </option>
+                      )
+                    })}
+                  </select>
+
+                  {column?.type === "source" && (
+                    <select
+                      value={mapping.sourceIndex ?? ""}
+                      onChange={event =>
+                        updateMapping(
+                          index,
+                          "sourceIndex",
+                          event.target.value === ""
+                            ? null
+                            : Number(event.target.value)
+                        )
+                      }
+                    >
+                      <option value="">Don't use</option>
+
+                      {headers.map((header, headerIndex) => (
+                        <option key={headerIndex} value={headerIndex}>
+                          {header}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  {(column?.type === "generated" ||
+                    column?.type === "default") && (
+                    <select
+                      value={mapping.enabled ? "true" : "false"}
+                      onChange={event =>
+                        updateMapping(
+                          index,
+                          "enabled",
+                          event.target.value === "true"
+                        )
+                      }
+                    >
+                      <option value="true">Use</option>
+                      <option value="false">Don't use</option>
+                    </select>
+                  )}
+
+                  <button type="button" onClick={() => removeMapping(index)}>
+                    Remove
+                  </button>
+                </div>
+              )
+            })}
+
+            <button type="button" onClick={addMapping}>
+              + Add mapping
+            </button>
           </div>
         )}
       
-      {file &&Object.values(mapping).some(value => value !== null) &&
+      {file && mappings.some(
+        item => item.shopifyKey && item.sourceIndex !== null
+      ) &&
       structureErrors.length === 0 && (
         <button className="transform-button" onClick={transformFile}>
           Transform
@@ -237,7 +320,6 @@ function App() {
 
       <section id="instructions">
         <h2>Before You Start</h2>
-
         <p>
           This tool is currently designed for converting CSV files
           containing simple products into a Shopify-ready CSV file.
@@ -248,9 +330,22 @@ function App() {
           are not supported yet.
         </p>
 
+        <p>
+          <strong>Validation and Beta Version</strong>
+        </p>
+
+        <p>
+          This is an early version of the tool and is still being improved.
+          Currently, error detection covers the following fields:
+          <strong> Title, Variant SKU, Vendor, Variant Price, and Variant Inventory Qty</strong>.
+          Other fields are not fully validated yet.
+          Always review your output file before importing it into Shopify.
+        </p>
+
         <h3>Example</h3>
 
         <p>Supplier CSV:</p>
+
 
         <pre>
           {`Product Name,SKU,Stock,Price,Brand
