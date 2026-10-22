@@ -134,6 +134,10 @@ function App() {
     })
     .then(data => {
       if (data instanceof Blob) {
+        if (window.gtag) {
+          window.gtag('event', 'conversion_success')
+          window.gtag('event', 'file_download')
+        }
         const url = URL.createObjectURL(data)
         const link = document.createElement('a')
         link.href = url
