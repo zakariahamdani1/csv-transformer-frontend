@@ -359,8 +359,61 @@ function App() {
           brake-pad,Brake Pad,ToyotaParts,Title,Default Title,BP001,15,25.50`}
         </pre>
       </section>
+
+      <section id="contact">
+        <h2>Contact &amp; Feedback</h2>
+
+        <p>
+          Have a question, found a problem, or have a suggestion?
+          Send us a message.
+        </p>
+
+        <form
+          action="https://formspree.io/f/mgorovbl"
+          method="POST"
+        >
+          <div>
+            <label htmlFor="contact-email">Your email (required)</label>
+            <input
+              id="contact-email"
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="contact-message">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="5"
+              placeholder="Write your message here..."
+              required
+            />
+          </div>
+
+          <button type="submit">Send Message</button>
+        </form>
+
+
+        <p>
+          Prefer Telegram?
+          {" "}
+          <a
+            href="https://t.me/ZEDKI17"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contact me on Telegram
+          </a>
+        </p>
+
+      </section>
     </div>
   )
 }
+
 
 export default App

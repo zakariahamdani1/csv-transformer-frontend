@@ -1,142 +1,343 @@
-.mapping {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+
+/* ---------- Global styles ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f7f5;
+  color: #24332b;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
 }
 
 .app {
-  max-width: 700px;
+  width: min(100% - 32px, 820px);
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #e1e8e3;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(30, 60, 42, 0.06);
+}
+
+/* ---------- Headings and text ---------- */
+
+.app h1 {
+  margin: 0 0 8px;
+  color: #205c3b;
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.25;
+}
+
+.app h1 + p {
+  margin: 0 0 28px;
+  color: #647168;
+  font-size: 16px;
+}
+
+.app > p {
+  margin-bottom: 8px;
+  color: #526158;
+  font-size: 15px;
+}
+
+h2 {
+  color: #294b37;
+  line-height: 1.3;
+}
+
+/* ---------- Product mapping ---------- */
+
+.mapping {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.mapping h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.mapping > p {
+  margin: 0 0 12px;
+  color: #647168;
+  font-size: 14px;
 }
 
 .mapping-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
+  padding: 12px;
+  background: #f8faf8;
+  border: 1px solid #e6ece7;
+  border-radius: 8px;
 }
 
 .mapping-row label {
-  width: 150px;
+  flex: 0 0 190px;
   font-weight: 600;
   font-size: 14px;
 }
 
 .mapping-row select {
-  width: 220px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: white;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5ce;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #24332b;
+  font: inherit;
   font-size: 14px;
 }
 
-.transform-button {
-  margin-top: 25px;
-  padding: 10px 24px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-}
-.app > p {
-  margin-bottom: 8px;
-  font-size: 15px;
-  color: #555;
+/* ---------- Inputs and file selection ---------- */
+
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 input[type="file"] {
-  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px dashed #aabbb0;
+  border-radius: 8px;
+  background: #f8faf8;
   cursor: pointer;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #f8f8f8;
 }
 
 .file-name {
   margin: 8px 0 20px;
+  color: #526158;
   font-size: 14px;
-  color: #555;
+  overflow-wrap: anywhere;
 }
 
-.app h1 {
-  margin-bottom: 8px;
-  font-size: 32px;
+/* ---------- Buttons ---------- */
+
+button {
+  padding: 10px 16px;
+  border: 1px solid #d0d9d2;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #294b37;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-.app h1 + p {
-  margin-top: 0;
-  margin-bottom: 20px;
+button:hover {
+  background: #edf4ef;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid #9bc9aa;
+  outline-offset: 2px;
+}
+
+.transform-button {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #287448;
+  color: #ffffff;
   font-size: 16px;
-  color: #666;
+  font-weight: 600;
+}
+
+.transform-button:hover {
+  background: #205c39;
 }
 
 .mapping + .transform-button {
-  margin-top: 25px;
-}
-
-.message {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-.message-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-button {
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.mapping h2 {
-  margin-bottom: 6px;
-  font-size: 22px;
-}
-
-.mapping > p {
-  margin-top: 0;
-  margin-bottom: 18px;
-  color: #666;
-  font-size: 14px;
+  margin-top: 24px;
 }
 
 .error-button {
   margin-top: 5px;
-  padding: 8px 14px;
+  padding: 9px 14px;
   font-size: 14px;
-  font-weight: 500;
 }
 
+.message-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* ---------- Status and feedback messages ---------- */
+
+.message {
+  margin: 20px 0 10px;
+  padding: 14px 16px;
+  border: 1px solid #dce5de;
+  border-radius: 8px;
+  background: #f8faf8;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Instructions ---------- */
+
 #instructions {
-  margin-top: 50px;
-  padding: 30px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #f8f9fa;
+  margin-top: 40px;
+  padding: 28px;
+  border: 1px solid #e1e8e3;
+  border-radius: 12px;
+  background: #f8faf8;
 }
 
 #instructions h2 {
-  margin-bottom: 20px;
+  margin: 0 0 18px;
 }
 
 #instructions h3 {
-  margin-top: 30px;
+  margin-top: 28px;
+  color: #294b37;
+}
+
+#instructions p {
+  color: #526158;
+  font-size: 14px;
 }
 
 #instructions pre {
-  background: #ffffff;
-  padding: 15px;
-  border: 1px solid #ddd;
+  max-width: 100%;
+  padding: 16px;
+  border: 1px solid #e1e8e3;
   border-radius: 8px;
+  background: #ffffff;
+  color: #24332b;
+  font-size: 13px;
+  line-height: 1.6;
   overflow-x: auto;
+  white-space: pre;
+}
+
+/* ---------- Contact form ---------- */
+
+#contact {
+  margin-top: 32px;
+  padding: 28px;
+  border: 1px solid #e1e8e3;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+#contact h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+#contact > p {
+  color: #647168;
   font-size: 14px;
+}
+
+#contact form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+#contact form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#contact label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#contact input[type="email"],
+#contact textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #cbd5ce;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #24332b;
+  font-size: 14px;
+}
+
+#contact textarea {
+  resize: vertical;
+}
+
+#contact form button {
+  align-self: flex-start;
+  border-color: #287448;
+  background: #287448;
+  color: #ffffff;
+}
+
+#contact form button:hover {
+  background: #205c39;
+}
+
+#contact a {
+  color: #286747;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Mobile layout ---------- */
+
+@media (max-width: 600px) {
+  .app {
+    width: min(100% - 20px, 820px);
+    margin: 12px auto;
+    padding: 20px 16px;
+    border-radius: 10px;
+  }
+
+  .mapping-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mapping-row label {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .mapping-row select {
+    width: 100%;
+  }
+
+  #instructions,
+  #contact {
+    margin-top: 24px;
+    padding: 18px 14px;
+  }
+
+  .transform-button {
+    width: 100%;
+  }
+
+  .message-buttons button {
+    flex: 1;
+  }
 }
